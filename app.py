@@ -1,40 +1,46 @@
 
 from flask import Flask, render_template, redirect, url_for, request,json
 from flask_config import Config
-import session_items as session
 import requests
 import os
-
+import trello_client as trello
+from todo_item import TodoItem
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
 base_url = "https://api.trello.com/1/"
 query = {'key': os.getenv('API_KEY'), 'token': os.getenv('API_TOKEN')}
-id = os.getenv('MEMBER_ID')
+
 
 @app.route('/')
 def index():
-    to_do = []
-    item = {}
-    url = base_url + '/boards/' + os.getenv('BOARD_ID') + '/cards'
-    response = requests.get(url= url, params = query)
-    trello_cards = response.json()
-    for card in trello_cards:
-        items[card] = trello_cards{'id': id, "Status" : "name" , "Desc" : "desc"}
+    raw_trello_cards = trello.get_cards()
+    items = [TodoItem.from_raw_trello_card(card) for card in raw_trello_cards]
     return  render_template('index.html',items=items)
 
 @app.route('/items/new', methods=['POST'])
 def add_item():
-    title = request.form['title']
-    session.add_item(title)
-    lists = request.form.get('title')
+    name = request.form['title']
+    trello.add_card(name)
     return redirect("/")
 
-@app.route('/items/<id>/complete')
-def complete_item(id):
-    session.save_item(id)
+@app.route('/items/<id>/doing')
+def doing_item(id):
+    trello.move_to_doing_card(id)
     return redirect("/")
+
+@app.route('/items/<id>/done')
+def done_item(id):
+    trello.get_card_by_id(id)
+    trello.move_to_done_card(id)
+    return redirect("/")
+
+@app.route('/items/<id>/undo')
+def undo_item(id):
+    trello.undo_done_card(id)
+    return redirect("/")
+
 
 if __name__ == '__main__':
     app.run()
