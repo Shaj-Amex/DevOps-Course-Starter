@@ -4,6 +4,7 @@ import requests
 import os
 import todo_app.trello_client as trello
 from todo_app.todo_item import TodoItem
+from todo_app.ViewModel import ViewModel
 
 app = Flask(__name__)
 
@@ -16,7 +17,8 @@ query = {'key': os.getenv('API_KEY'), 'token': os.getenv('API_TOKEN')}
 def index():
     raw_trello_cards = trello.get_cards()
     items = [TodoItem.from_raw_trello_card(card) for card in raw_trello_cards]
-    return  render_template('index.html',items=items)
+    item_view_model = ViewModel(items)
+    return  render_template('index.html',view_model=item_view_model)
 
 @app.route('/items/new', methods=['POST'])
 def add_item():
@@ -31,7 +33,6 @@ def doing_item(id):
 
 @app.route('/items/<id>/done')
 def done_item(id):
-    trello.get_card_by_id(id)
     trello.move_to_done_card(id)
     return redirect("/")
 
@@ -39,7 +40,6 @@ def done_item(id):
 def undo_item(id):
     trello.undo_done_card(id)
     return redirect("/")
-
 
 if __name__ == '__main__':
     app.run()
