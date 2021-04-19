@@ -9,3 +9,21 @@ def test_view_model_todo_items():
 
     assert todoitems
 
+def test_view_model_doing_items():
+    items = [
+        TodoItem(1, "This is Doing Item", "Doing")
+    ]
+    doingitems = ViewModel.doing_items
+
+    assert doingitems
+
+def test_view_model_done_items():
+    items = [
+        TodoItem(1, "This is Done Item", "Done")
+    ]
+    doneitems = ViewModel.doing_items
+
+    assert doneitems
+
+
+
