@@ -8,8 +8,7 @@ class ViewModel:
 
     @property
     def todo_items(self):
-        todoitems = [x for x in self._items if x.status == 'To Do'] 
-        return todoitems
+        return self._items
 
     @property
     def doing_items(self):

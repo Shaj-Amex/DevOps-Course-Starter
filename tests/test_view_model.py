@@ -5,6 +5,7 @@ def test_view_model_todo_items():
     items = [
         TodoItem(1, "This is To Do Item", "To Do")
     ]
-    todoitems = ViewModel.items
+    todoitems = ViewModel.todo_items
 
     assert todoitems
+
