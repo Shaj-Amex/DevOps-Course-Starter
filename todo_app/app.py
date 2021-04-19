@@ -4,7 +4,7 @@ import requests
 import os
 import todo_app.trello_client as trello
 from todo_app.todo_item import TodoItem
-from todo_app.ViewModel import ViewModel
+from todo_app.view_model import ViewModel
 
 app = Flask(__name__)
 
