@@ -6,7 +6,7 @@ import requests
 def get_cards(trello_config):
     url = f"{trello_config.base_url}/boards/{trello_config.board_id}/cards"
     query = {'key': trello_config.key, 'token': trello_config.token}
-    response = requests.get(url= url, params = query)
+    response = requests.get(url = url, params = query)
 
     if response.status_code != 200:
         raise Exception(f"Wrong status code returned for a get cards request: {response.status_code}")
