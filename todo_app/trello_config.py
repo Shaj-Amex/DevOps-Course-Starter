@@ -4,6 +4,7 @@ class TrelloConfig:
     def __init__(self):
         self.base_url = "https://api.trello.com/1"
         self.board_id = os.getenv('BOARD_ID')
+        self.name = os.getenv('NAME')
         self.key = os.getenv('API_KEY')
         self.token = os.getenv('API_TOKEN')
         self._todo_list_id = os.getenv('TODO_LIST_ID')

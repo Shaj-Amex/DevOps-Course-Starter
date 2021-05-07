@@ -1,4 +1,4 @@
-import os
+import json
 from todo_app import trello_config
 import requests
 
@@ -51,3 +51,26 @@ def undo_done_card(id,trello_config):
 
     if response.status_code != 200:
         raise Exception(f"Wrong status code returned for a undo card by id from done request: {response.status_code}")
+
+def create_trello_board(trello_config):
+    create_board ={'key': trello_config.key, 'token': trello_config.token, 'name': trello_config.name}
+    board_url = f"{trello_config.base_url}/boards/"
+    response = requests.post(url=board_url, params = create_board)
+        
+    if response.status_code != 200:
+        raise Exception(f"Wrong status code returned for create board: {response.status_code}")
+        
+    print (response.text)
+    board_json = response.json()
+    return board_json['id']
+
+
+def delete_trello_board(board_id,trello_config):
+    delete_board ={'key': trello_config.key, 'token': trello_config.token}
+    delete_url = f"{trello_config.base_url}/boards/{trello_config.board_id}"
+    response = requests.delete(url=delete_url, params = delete_board)
+
+    if response.status_code != 200:
+        raise Exception(f"Wrong status code returned for create board: {response.status_code}")
+
+    print (response.text)
