@@ -2,11 +2,8 @@
 
 ### Testing of TO DO APP
 
-  ## Unit Tests
-   To execute the unit tests for TDD, enter the below command from terminal
-   poetry run pytest
-   The unit test would pass based on assertion statements within test script
-   For unit test scripts please check tests/test_view_model.py
+  There are 3 tests that have been added - Unit Tests , Integration Tests and EndToEnd Tests. They can be run by the following command : python -m pytest For the end to end tests , install the latest version of Chrome browser and Chrome Driver.
+
 
 ## System Requirements
 

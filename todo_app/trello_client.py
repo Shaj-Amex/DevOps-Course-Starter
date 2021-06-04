@@ -53,24 +53,65 @@ def undo_done_card(id,trello_config):
         raise Exception(f"Wrong status code returned for a undo card by id from done request: {response.status_code}")
 
 def create_trello_board(trello_config):
-    create_board ={'key': trello_config.key, 'token': trello_config.token, 'name': trello_config.name}
+    create_board = {'key': trello_config.key, 'token': trello_config.token, 'name': trello_config.name}
     board_url = f"{trello_config.base_url}/boards/"
     response = requests.post(url=board_url, params = create_board)
         
     if response.status_code != 200:
         raise Exception(f"Wrong status code returned for create board: {response.status_code}")
         
-    print (response.text)
+    #print (response.text)
     board_json = response.json()
     return board_json['id']
 
 
 def delete_trello_board(board_id,trello_config):
-    delete_board ={'key': trello_config.key, 'token': trello_config.token}
-    delete_url = f"{trello_config.base_url}/boards/{trello_config.board_id}"
+    delete_board = {'key': trello_config.key, 'token': trello_config.token}
+    delete_url = f"{trello_config.base_url}/boards/{board_id}"
     response = requests.delete(url=delete_url, params = delete_board)
 
     if response.status_code != 200:
-        raise Exception(f"Wrong status code returned for create board: {response.status_code}")
+        raise Exception(f"Wrong status code returned for Delete board: {response.status_code}")
 
     print (response.text)
+
+def get_todo_lists_on_board(board_id,trello_config):
+    list_board ={'key': trello_config.key, 'token': trello_config.token}
+    get_list = f"{trello_config.base_url}/boards/{board_id}/lists"
+    response = requests.get(url=get_list, params=list_board)
+    if response.status_code != 200:
+        raise Exception(f"Wrong status code returned for Get List Board: {response.status_code}")
+
+    print (response.text)
+    list_json = response.json()
+    for l in list_json:
+        if l['name'] == 'To Do':
+            return l['id']
+
+def get_doing_lists_on_board(board_id,trello_config):
+    list_board ={'key': trello_config.key, 'token': trello_config.token}
+    get_list = f"{trello_config.base_url}/boards/{board_id}/lists"
+    response = requests.get(url=get_list, params=list_board)
+    if response.status_code != 200:
+        raise Exception(f"Wrong status code returned for Get Doing List Board: {response.status_code}")
+
+    #print (response.text)
+    list_json = response.json()
+    for l in list_json:
+        if l['name'] == 'Doing':
+            return l['id']
+
+def get_done_lists_on_board(board_id,trello_config):
+    list_board ={'key': trello_config.key, 'token': trello_config.token}
+    get_list = f"{trello_config.base_url}/boards/{board_id}/lists"
+    response = requests.get(url=get_list, params=list_board)
+    if response.status_code != 200:
+        raise Exception(f"Wrong status code returned for Get Done List Board: {response.status_code}")
+
+    #print (response.text)
+    list_json = response.json()
+    for l in list_json:
+        if l['name'] == 'Done':
+            return l['id']
+    
+

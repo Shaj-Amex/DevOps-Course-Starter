@@ -23,6 +23,3 @@ class TrelloConfig:
     def done_list_id(self):
         done_list_id = self._done_list_id
         return done_list_id
-    
-
-        

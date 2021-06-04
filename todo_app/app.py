@@ -13,8 +13,8 @@ def create_app():
     trello_config = TrelloConfig()
 
 
-    #base_url = "https://api.trello.com/1/"
-    #query = {'key': os.getenv('API_KEY'), 'token': os.getenv('API_TOKEN')}
+    base_url = "https://api.trello.com/1/"
+    query = {'key': os.getenv('API_KEY'), 'token': os.getenv('API_TOKEN')}
 
 
     @app.route('/')
