@@ -49,7 +49,7 @@ def app_with_temp_board():
 @pytest.fixture(scope="module")
 def driver():  
     
-    with webdriver.Chrome(executable_path=r'/Users/shajeethsushama/DevOps-Course-Starter/chromedriver') as driver:
+    with webdriver.Chrome('./chromedriver') as driver:
         yield driver
 
 def test_task_journey(driver: WebDriver, app_with_temp_board):   
