@@ -14,24 +14,24 @@
           {% for item in view_model.todo_items %}
             <li class="list-group-item flex-column">
              <div class="d-flex w-100 justify-content-between">
-               <h5 class="mt-1 mb-1">{{ item.title }} - {{item.status}}</h5>
-               <a href="{{ url_for('doing_item', id=item.id) }}" class="btn btn-sm btn-primary">Mark as Doing</a>
+               <h5 class="mt-1 mb-1" name="item-text">{{ item.title }} - {{item.status}}</h5>
+               <a href="{{ url_for('doing_item', id=item.id) }}" name="doing-button" class="btn btn-sm btn-primary">Mark as Doing</a>
              <div>  
             <li>
           {% endfor %}
           {% for item in view_model.doing_items %}
           <li class="list-group-item flex-column">
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="mt-1 mb-1">{{ item.title }} - {{item.status}}</h5>
-              <a href="{{ url_for('done_item', id=item.id) }}" class="btn btn-sm btn-primary">Mark as Done</a>
+              <h5 class="mt-1 mb-1" name="item-text">{{ item.title }} - {{item.status}}</h5>
+              <a href="{{ url_for('done_item', id=item.id) }}" name="done-button" class="btn btn-sm btn-primary">Mark as Done</a>
             <div>  
           <li>
         {% endfor %}
         {% for item in view_model.done_items %}
         <li class="list-group-item flex-column">
          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mt-1 mb-1">{{ item.title }} - {{item.status}}</h5>
-            <a href="{{ url_for('undo_item', id=item.id) }}" class="btn btn-sm btn-primary">Mark as Todo</a>
+            <h5 class="mt-1 mb-1" name="item-text">{{ item.title }} - {{item.status}}</h5>
+            <a href="{{ url_for('undo_item', id=item.id) }}" name="todo-button" class="btn btn-sm btn-primary">Mark as Todo</a>
          <div>  
         <li>
       {% endfor %}
@@ -45,7 +45,7 @@
         <div class="form-group"></div>
         <label for ="title">Title Input</label>
         <input type="text" id="title" name="title" required>
-        <input type="submit" value ="Submit"/>
+        <input type="submit" name="submit" value ="Submit"/>
       </form>
     <div>
   </div>
