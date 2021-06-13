@@ -48,7 +48,7 @@ def app_with_temp_board():
 
 @pytest.fixture(scope="module")
 def driver():  
-    
+
     with webdriver.Chrome('./chromedriver') as driver:
         yield driver
 
