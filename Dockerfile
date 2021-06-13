@@ -25,3 +25,20 @@ ENV FLASK_ENV=production
 RUN poetry install --no-dev
 RUN poetry add gunicorn
 ENTRYPOINT ["poetry", "run", "gunicorn", "--bind", "0.0.0.0:5000", "todo_app.app:app"]
+
+FROM base as test 
+ENV FLASK_ENV=development
+RUN poetry install
+
+# Install Chrome
+RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o chrome.deb &&\
+    apt-get install ./chrome.deb -y &&\
+    rm ./chrome.deb
+# Install Chromium WebDriver
+RUN LATEST=`curl -sSL https://chromedriver.storage.googleapis.com/LATEST_RELEASE` &&\
+    echo "Installing chromium webdriver version ${LATEST}" &&\
+    curl -sSL https://chromedriver.storage.googleapis.com/${LATEST}/chromedriver_linux64.zip -o chromedriver_linux64.zip &&\
+    apt-get install unzip -y &&\
+    unzip ./chromedriver_linux64.zip
+
+ENTRYPOINT ["poetry", "run", "pytest"]

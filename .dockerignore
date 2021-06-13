@@ -3,3 +3,5 @@ Dockerfile
 .vagrant
 .vscode
 .env
+__pycache__
+.pytest_cache
