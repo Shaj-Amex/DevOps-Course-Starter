@@ -9,6 +9,7 @@ from todo_app.trello_client import create_trello_board,delete_trello_board, get_
 from todo_app.trello_client import get_done_lists_on_board                        
 from threading import Thread
 from selenium import webdriver 
+from selenium.webdriver.support.ui import WebDriverWait
 import time
 
 @pytest.fixture(scope='module')
@@ -50,22 +51,24 @@ def app_with_temp_board():
 def driver():  
 
     with webdriver.Chrome('./chromedriver') as driver:
+    #with webdriver.Chrome(executable_path=r'/Users/shajeethsushama/DevOps-Course-Starter/chromedriver') as driver:
         yield driver
 
 def test_task_journey(driver: WebDriver, app_with_temp_board):   
     driver.get('http://localhost:5000/') 
-    time.sleep(5)
-    text_box: WebElement = driver.find_element_by_name('title')
+    #text_box: WebElement = driver.find_element_by_name('title')
+    text_box: WebElement = WebDriverWait(driver, timeout=5).until(lambda d:
+    d.find_element_by_name('title'))
     text_box.send_keys("Test Todo")
-    time.sleep(5)
-    submit_button: WebElement = driver.find_element_by_name('submit')
+    submit_button: WebElement = WebDriverWait(driver, timeout=5).until(lambda d:
+    d.find_element_by_name('submit'))
     submit_button.click()
-    time.sleep(5)
-    doing_button: WebElement = driver.find_element_by_name('doing-button')
+    doing_button: WebElement = WebDriverWait(driver, timeout=5).until(lambda d:
+    d.find_element_by_name('doing-button'))
     doing_button.click()
-    time.sleep(5)
-    done_button: WebElement = driver.find_element_by_name('done-button')
+    done_button: WebElement = WebDriverWait(driver, timeout=5).until(lambda d:
+    d.find_element_by_name('done-button'))
     done_button.click()
-    time.sleep(5)
-    item_text: WebElement = driver.find_element_by_name('item-text')
+    item_text: WebElement = WebDriverWait(driver, timeout=5).until(lambda d:
+    d.find_element_by_name('item-text'))
     assert item_text.text == 'Test Todo - Done'
