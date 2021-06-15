@@ -46,11 +46,34 @@ def app_with_temp_board():
 
 @pytest.fixture(scope="module")
 def driver():  
-    
-    with webdriver.Chrome(executable_path=r'/Users/shajeethsushama/DevOps-Course-Starter/chromedriver') as driver:
-        yield driver
+    opts = webdriver.ChromeOptions()
+    opts.add_argument('--headless')
+    opts.add_argument('--no-sandbox')
+    #opts.add_argument('--disable-dev-shm-usage')
 
-def test_task_journey(driver, app_with_temp_board):   
+    with webdriver.Chrome('/usr/bin/chromedriver', options=opts) as driver:
+       yield driver
+#@pytest.fixture(scope="module")
+#def driver():  
+    # with webdriver.Chrome('./chromedriver') as driver:
+    #   yield driver
+        
+
+def test_task_journey(driver, app_with_temp_board): 
     driver.get('http://localhost:5000/') 
-    time.sleep(30) 
     assert driver.title == 'To-Do App'
+    time.sleep(5)
+    text_box =  WebElement = driver.find_element_by_name('title')
+    text_box.send_keys("Test Todo")
+    time.sleep(5)
+    submit_button: WebElement = driver.find_element_by_name('submit')
+    submit_button.click()
+    time.sleep(5)
+    doing_button: WebElement = driver.find_element_by_name('doing-button')
+    doing_button.click()
+    time.sleep(5)
+    done_button: WebElement = driver.find_element_by_name('done-button')
+    done_button.click()
+    time.sleep(5)
+    item_text: WebElement = driver.find_element_by_name('item-text')
+    assert item_text.text == 'Test Todo - Done'  

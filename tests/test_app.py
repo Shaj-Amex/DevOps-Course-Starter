@@ -1,11 +1,9 @@
 
 from unittest.mock import Mock, patch
-#from unittest import mock
 from todo_app import app
 import pytest
 from dotenv import find_dotenv, load_dotenv
 import os
-#import requests
 
 
 @pytest.fixture
