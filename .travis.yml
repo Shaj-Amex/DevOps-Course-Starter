@@ -1,5 +1,3 @@
-branches:
-  only:
-    - Module_7
+
 script:
  -echo "hello world"
