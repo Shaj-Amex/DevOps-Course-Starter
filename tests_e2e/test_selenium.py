@@ -1,18 +1,28 @@
 import os
+from os.path import join, dirname
 import pytest
-import dotenv
+from dotenv import find_dotenv, load_dotenv
 from todo_app import app
 from todo_app.trello_config import  TrelloConfig
 from todo_app.trello_client import create_trello_board,delete_trello_board, get_doing_lists_on_board, get_todo_lists_on_board
 from todo_app.trello_client import get_done_lists_on_board                        
 from threading import Thread
 from selenium import webdriver 
+from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
 import time
 
 @pytest.fixture(scope='module')
 def app_with_temp_board(): 
-    file_path = dotenv.find_dotenv('.env')
-    dotenv.load_dotenv(file_path, override=True)
+    
+    try:
+        file_path = find_dotenv('.env')
+        load_dotenv(file_path, override=True)
+    except OSError:
+        print('Failed to load dotenv, continuing...')
+
+    #load_dotenv(file_path, override=True)
+
     config = TrelloConfig()
    
     # Create the new board & update the board id environment variable
@@ -49,21 +59,20 @@ def driver():
     opts = webdriver.ChromeOptions()
     opts.add_argument('--headless')
     opts.add_argument('--no-sandbox')
-    #opts.add_argument('--disable-dev-shm-usage')
-
+    opts.add_argument('--disable-dev-shm-usage')
     with webdriver.Chrome('/usr/bin/chromedriver', options=opts) as driver:
        yield driver
-#@pytest.fixture(scope="module")
-#def driver():  
+    #@pytest.fixture(scope="module")
+    #def driver():  
     # with webdriver.Chrome('./chromedriver') as driver:
     #   yield driver
         
 
-def test_task_journey(driver, app_with_temp_board): 
+def test_task_journey(driver: WebDriver, app_with_temp_board): 
     driver.get('http://localhost:5000/') 
     assert driver.title == 'To-Do App'
     time.sleep(5)
-    text_box =  WebElement = driver.find_element_by_name('title')
+    text_box:WebElement = driver.find_element_by_name('title')
     text_box.send_keys("Test Todo")
     time.sleep(5)
     submit_button: WebElement = driver.find_element_by_name('submit')
