@@ -56,6 +56,8 @@ def app_with_temp_board():
     delete_trello_board(board_id,config)
 
 @pytest.fixture(scope="module")
+
+# Below Code for Running on Docker in Headless Mode
 def driver():  
     opts = webdriver.ChromeOptions()
     opts.add_argument('--headless')
@@ -63,6 +65,8 @@ def driver():
     opts.add_argument('--disable-dev-shm-usage')
     with webdriver.Chrome('/usr/bin/chromedriver', options=opts) as driver:
        yield driver
+
+    # Uncomment Below Code for Running on Local
     #@pytest.fixture(scope="module")
     #def driver():  
     # with webdriver.Chrome('./chromedriver') as driver:
@@ -72,18 +76,18 @@ def driver():
 def test_task_journey(driver: WebDriver, app_with_temp_board): 
     driver.get('http://localhost:5000/') 
     assert driver.title == 'To-Do App'
-    time.sleep(5)
+    time.sleep(1)
     text_box:WebElement = driver.find_element_by_name('title')
     text_box.send_keys("Test Todo")
-    time.sleep(5)
+    time.sleep(1)
     submit_button: WebElement = driver.find_element_by_name('submit')
     submit_button.click()
-    time.sleep(5)
+    time.sleep(1)
     doing_button: WebElement = driver.find_element_by_name('doing-button')
     doing_button.click()
-    time.sleep(5)
+    time.sleep(1)
     done_button: WebElement = driver.find_element_by_name('done-button')
     done_button.click()
-    time.sleep(5)
+    time.sleep(1)
     item_text: WebElement = driver.find_element_by_name('item-text')
     assert item_text.text == 'Test Todo - Done'  

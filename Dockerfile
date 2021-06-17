@@ -56,10 +56,15 @@ RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-
   && chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
   && ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
 
+  #COPY /usr/bin/chromedriver
+
+
 # Below Code Not Working
 #RUN LATEST=`curl -sSL https://chromedriver.storage.googleapis.com/LATEST_RELEASE` &&\
 #    echo "Installing chromium webdriver version ${LATEST}" &&\
 #    curl -sSL https://chromedriver.storage.googleapis.com/${LATEST}/chromedriver_linux64.zip -o chromedriver_linux64.zip &&\
 #   apt-get install unzip -y &&\
 #    unzip ./chromedriver_linux64.zip
+RUN export PATH=$PATH:/usr/bin/chromedriver
+
 ENTRYPOINT ["poetry", "run", "pytest"]
