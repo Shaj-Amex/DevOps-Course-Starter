@@ -114,4 +114,5 @@ env/
 
 ### Configuration files ###
 .env
+.vscode
 .vagrant
