@@ -8,4 +8,5 @@ script:
   - docker run todo_app:test tests
   - docker run --env API_KEY --env API_TOKEN --env BOARD_ID --env NAME --env TODO_LIST_ID --env DOING_LIST_ID --env DONE_LIST_ID --env FLASK_APP --env FLASK_ENV  todo_app:test tests_e2e
 
+  
 

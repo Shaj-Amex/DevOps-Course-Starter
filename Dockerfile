@@ -66,5 +66,5 @@ RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-
 #   apt-get install unzip -y &&\
 #    unzip ./chromedriver_linux64.zip
 RUN export PATH=$PATH:/usr/bin/chromedriver
-
+ENV PYTHONPATH=.
 ENTRYPOINT ["poetry", "run", "pytest"]
