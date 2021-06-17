@@ -5,7 +5,8 @@ services:
 script:
   #- docker build --target test --tag todo_app:test .
   #- docker run todo_app:test tests
-  docker build —-target test --tag todo_app:test_e2e .
-  docker run --env-file .env todo_app:test_e2e tests_e2e
+  - docker build —-target test --tag todo_app:test_e2e .
+  - docker run --env-file .env todo_app:test_e2e tests_e2e
+  # docker run --env apiKey --env apiToken --env boardId --env TODO_LIST_ID --env DOING_LIST_ID --env DONE_LIST_ID --env FLASK_APP --env FLASK_ENV todo_app:test_e2e tests_e2e
 
 
