@@ -2,14 +2,15 @@ import os
 from os.path import join, dirname
 import pytest
 from dotenv import find_dotenv, load_dotenv
+from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
 from todo_app import app
 from todo_app.trello_config import  TrelloConfig
 from todo_app.trello_client import create_trello_board,delete_trello_board, get_doing_lists_on_board, get_todo_lists_on_board
 from todo_app.trello_client import get_done_lists_on_board                        
 from threading import Thread
 from selenium import webdriver 
-from selenium.webdriver.chrome.webdriver import WebDriver
-from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.support.ui import WebDriverWait
 import time
 
 @pytest.fixture(scope='module')
