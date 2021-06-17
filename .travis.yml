@@ -1,7 +1,7 @@
 
 services:
-- docker
+  - docker
 
 script:
-- docker Build —target test -t todo_app:test .
-- docker run todo_app:test tests
+  - docker Build —target test -t todo_app:test .
+  - docker run todo_app:test tests
