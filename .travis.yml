@@ -6,6 +6,7 @@ script:
   # Script for Building Docker Image and Run the Tests on TRAVIS CI
   - docker build --target test --tag todo_app:test .
   - docker run todo_app:test tests
+  - docker build --target test --tag todo_app:test_e2e .
   #- docker run --env-file .env todo_app:test tests_e2e
-  - docker run -e API_KEY=$API_KEY -e API_TOKEN=$API_TOKEN -e NAME=$NAME -e BOARD_ID=$BOARD_ID -e TODO_LIST_ID --env DOING_LIST_ID --env DONE_LIST_ID --env FLASK_APP --env FLASK_ENV  todo_app:test tests_e2e
+  - docker run -e API_KEY=$API_KEY -e API_TOKEN=$API_TOKEN -e NAME=$NAME -e BOARD_ID=$BOARD_ID -e TODO_LIST_ID --env DOING_LIST_ID --env DONE_LIST_ID --env FLASK_APP --env FLASK_ENV  todo_app:test_e2e tests_e2e
   # End of Script
