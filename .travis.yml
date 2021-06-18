@@ -7,5 +7,5 @@ script:
   - docker build --target test --tag todo_app:test .
   - docker run todo_app:test tests
   #- docker run --env-file .env todo_app:test tests_e2e
-  - docker run --env API_KEY=$API_KEY --env API_TOKEN=$API_TOKEN --env NAME=$NAME --env TODO_LIST_ID --env DOING_LIST_ID --env DONE_LIST_ID --env FLASK_APP --env FLASK_ENV  todo_app:test tests_e2e
+  - docker run -e API_KEY=$API_KEY -e API_TOKEN=$API_TOKEN -e NAME=$NAME -e BOARD_ID=$BOARD_ID -e TODO_LIST_ID --env DOING_LIST_ID --env DONE_LIST_ID --env FLASK_APP --env FLASK_ENV  todo_app:test tests_e2e
   # End of Script
