@@ -1,5 +1,4 @@
 import os
-from os.path import join, dirname
 import pytest
 from dotenv import find_dotenv, load_dotenv
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -56,7 +55,6 @@ def app_with_temp_board():
     delete_trello_board(board_id,config)
 
 @pytest.fixture(scope="module")
-
 # Below Code for Running on Docker in Headless Mode
 def driver():  
     opts = webdriver.ChromeOptions()
@@ -65,12 +63,11 @@ def driver():
     opts.add_argument('--disable-dev-shm-usage')
     with webdriver.Chrome('/usr/bin/chromedriver', options=opts) as driver:
        yield driver
-
-    # Uncomment Below Code for Running on Local
-    #@pytest.fixture(scope="module")
-    #def driver():  
-    # with webdriver.Chrome('./chromedriver') as driver:
-    #   yield driver
+# Uncomment Below Code for Running on Local
+#@pytest.fixture(scope="module")
+#def driver():  
+#     with webdriver.Chrome('./chromedriver') as driver:
+#       yield driver
         
 
 def test_task_journey(driver: WebDriver, app_with_temp_board): 

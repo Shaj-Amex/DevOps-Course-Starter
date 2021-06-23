@@ -4,12 +4,14 @@
 
   To Build and Run the Unit & Integration Tests on DockerFile
   
-    Docker Build —target test -t todo_app:test .
-    Docker run todo_app:test tests
+    docker build —-target test --tag todo_app:test .
+    docker run todo_app:test tests
   
-  To Build End to End Tests on Dockerfile
-    Docker build —target test -t todo_app:test_e2e .
+  To Build and Run End to End Tests on Dockerfile
+
+    docker build —-target test -tag todo_app:test_e2e .
     docker run --env-file .env todo_app:test_e2e tests_e2e
+
 
 ### Testing of TO DO APP
 
