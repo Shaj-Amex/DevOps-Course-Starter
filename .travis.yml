@@ -14,9 +14,9 @@ script:
   - docker run --env API_KEY --env API_TOKEN --env NAME --env BOARD_ID --env TODO_LIST_ID --env DOING_LIST_ID --env DONE_LIST_ID --env FLASK_APP --env FLASK_ENV  todo_app:test_e2e tests_e2e
   # End of Script
 before_install:
-  - docker build -target production  --tag $DOCKER_LOGIN/todo_app:latest .
+  - docker build --target production  --tag $DOCKER_LOGIN/todo_app:latest .
 after_success:
-  - echo $DOCKER_PASSWORD | docker login -- username $DOCKER_LOGIN --password-stdin
+  - echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
   - docker login --username=_ --password=$(heroku auth:token) registry.heroku.com
   
 install:
@@ -30,7 +30,7 @@ deploy:
   app: $HEROKU_APP
   on: 
     branch: master
-    
+
 
 
 
