@@ -2,11 +2,36 @@
 services:
   - docker
 
-script:
-  # Script for Building Docker Image and Run the Tests on TRAVIS CI
+before_script:
+  # Script for Building Docker Image for Tests
   - docker build --target test --tag todo_app:test .
-  - docker run todo_app:test tests
   - docker build --target test --tag todo_app:test_e2e .
+  
+script:
+  # Script for running Tests on CI
+  - docker run todo_app:test tests
   #- docker run --env-file .env todo_app:test tests_e2e
   - docker run --env API_KEY --env API_TOKEN --env NAME --env BOARD_ID --env TODO_LIST_ID --env DOING_LIST_ID --env DONE_LIST_ID --env FLASK_APP --env FLASK_ENV  todo_app:test_e2e tests_e2e
   # End of Script
+before_install:
+  - docker build -target production  --tag $DOCKER_LOGIN/todo_app:latest .
+after_success:
+  - echo $DOCKER_PASSWORD | docker login -- username $DOCKER_LOGIN --password-stdin
+  - docker login --username=_ --password=$(heroku auth:token) registry.heroku.com
+  
+install:
+  - docker push $DOCKER_LOGIN/todo_app:latest
+  - docker tag $DOCKER_LOGIN/todo_app registry.heroku.com/$HEROKU_APP/web
+  - docker push registry.heroku.com/$HEROKU_APP/web
+  
+
+deploy:
+  provider: heroku
+  app: $HEROKU_APP
+  on: 
+    branch: master
+    
+
+
+
+

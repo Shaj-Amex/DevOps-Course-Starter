@@ -11,7 +11,7 @@ WORKDIR /DevOps-Course-Starter
 COPY . /DevOps-Course-Starter
 
 # Expose the Port
-EXPOSE 5000
+#EXPOSE 5000
 
 FROM base as development
 
@@ -22,9 +22,16 @@ ENTRYPOINT [ "poetry", "run", "flask", "run", "--port", "5000" , "--host", "0.0.
 FROM base as production
 
 ENV FLASK_ENV=production
-RUN poetry install --no-dev
+#RUN poetry install --no-dev
+RUN poetry config virtualenvs.create false --local && poetry install
 RUN poetry add gunicorn
-ENTRYPOINT ["poetry", "run", "gunicorn", "--bind", "0.0.0.0:5000", "todo_app.app:app"]
+
+#ENTRYPOINT ["poetry", "run", "gunicorn", "--bind", "0.0.0.0:5000", "todo_app.app:app"]
+COPY ./entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+#ENTRYPOINT ["poetry", "run", "gunicorn", "--bind", "./entrypoint.sh", "shajeethtodoapp/todo_app:latest"]
+ENTRYPOINT ["./entrypoint.sh"]
+
 
 FROM base as test 
 ENV FLASK_ENV=development
