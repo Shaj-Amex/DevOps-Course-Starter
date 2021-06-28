@@ -21,9 +21,10 @@ script:
   - docker run --env API_KEY --env API_TOKEN --env NAME --env BOARD_ID --env TODO_LIST_ID --env DOING_LIST_ID --env DONE_LIST_ID --env FLASK_APP --env FLASK_ENV  todo_app:test tests_e2e
   # End of Script 
 deploy:
-  provider: heroku
+  provider: script
   api_key: $HEROKU_API_KEY
-  app: $HEROKU_APP
+  script:
+    - heroku container:release -a $HEROKU_APP web
   on: 
     branch: Module_8
 
