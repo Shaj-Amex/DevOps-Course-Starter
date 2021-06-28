@@ -7,9 +7,9 @@ before_install:
 
 install:
   # Script for Building Docker Image for Tests
-  - docker build --target test --tag todo_app:test .
+  - docker build --cache-from todo_app:test --target test --tag todo_app:test .
   #- docker build --target test --tag todo_app:test_e2e .
-  - docker build --target production --tag $DOCKER_LOGIN/todo_app:latest .
+  - docker build --cache-from $DOCKER_LOGIN/todo_app:latest --target production --tag $DOCKER_LOGIN/todo_app:latest .
   - docker push $DOCKER_LOGIN/todo_app:latest
   - docker tag $DOCKER_LOGIN/todo_app registry.heroku.com/$HEROKU_APP/web
   - docker push registry.heroku.com/$HEROKU_APP/web
