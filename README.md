@@ -1,5 +1,18 @@
 # DevOps Apprenticeship: Project Exercise
 
+### Running Tests on Docker
+
+  To Build and Run the Unit & Integration Tests on DockerFile
+  
+    docker build --target test --tag todo_app:test .
+    docker run todo_app:test tests
+  
+  To Build and Run End to End Tests on Dockerfile
+
+    docker build --target test -tag todo_app:test_e2e .
+    docker run --env-file .env todo_app:test_e2e tests_e2e
+
+
 ### Testing of TO DO APP
 
   There are 3 tests that have been added - Unit Tests , Integration Tests and EndToEnd Tests. They can be run by the following command : poetry run pytest For the end to end tests , install the latest version of Chrome browser and Chrome Driver.

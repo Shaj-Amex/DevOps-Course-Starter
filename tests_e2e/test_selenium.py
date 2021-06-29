@@ -1,6 +1,6 @@
 import os
 import pytest
-import dotenv
+from dotenv import find_dotenv, load_dotenv
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from todo_app import app
@@ -14,8 +14,15 @@ import time
 
 @pytest.fixture(scope='module')
 def app_with_temp_board(): 
-    file_path = dotenv.find_dotenv('.env')
-    dotenv.load_dotenv(file_path, override=True)
+    
+    try:
+        file_path = find_dotenv('.env')
+        load_dotenv(file_path, override=True)
+    except OSError:
+        print('Failed to load dotenv, continuing...')
+
+    #load_dotenv(file_path, override=True)
+
     config = TrelloConfig()
    
     # Create the new board & update the board id environment variable
@@ -48,27 +55,36 @@ def app_with_temp_board():
     delete_trello_board(board_id,config)
 
 @pytest.fixture(scope="module")
+# Below Code for Running on Docker in Headless Mode
 def driver():  
+    opts = webdriver.ChromeOptions()
+    opts.add_argument('--headless')
+    opts.add_argument('--no-sandbox')
+    opts.add_argument('--disable-dev-shm-usage')
+    with webdriver.Chrome('/usr/bin/chromedriver', options=opts) as driver:
+       yield driver
+# Uncomment Below Code for Running on Local
+#@pytest.fixture(scope="module")
+#def driver():  
+#     with webdriver.Chrome('./chromedriver') as driver:
+#       yield driver
+        
 
-    with webdriver.Chrome('./chromedriver') as driver:
-    #with webdriver.Chrome(executable_path=r'/Users/shajeethsushama/DevOps-Course-Starter/chromedriver') as driver:
-        yield driver
-
-def test_task_journey(driver: WebDriver, app_with_temp_board):   
+def test_task_journey(driver: WebDriver, app_with_temp_board): 
     driver.get('http://localhost:5000/') 
-    #text_box: WebElement = driver.find_element_by_name('title')
-    text_box: WebElement = WebDriverWait(driver, timeout=5).until(lambda d:
-    d.find_element_by_name('title'))
+    assert driver.title == 'To-Do App'
+    time.sleep(1)
+    text_box:WebElement = driver.find_element_by_name('title')
     text_box.send_keys("Test Todo")
-    submit_button: WebElement = WebDriverWait(driver, timeout=5).until(lambda d:
-    d.find_element_by_name('submit'))
+    time.sleep(1)
+    submit_button: WebElement = driver.find_element_by_name('submit')
     submit_button.click()
-    doing_button: WebElement = WebDriverWait(driver, timeout=5).until(lambda d:
-    d.find_element_by_name('doing-button'))
+    time.sleep(1)
+    doing_button: WebElement = driver.find_element_by_name('doing-button')
     doing_button.click()
-    done_button: WebElement = WebDriverWait(driver, timeout=5).until(lambda d:
-    d.find_element_by_name('done-button'))
+    time.sleep(1)
+    done_button: WebElement = driver.find_element_by_name('done-button')
     done_button.click()
-    item_text: WebElement = WebDriverWait(driver, timeout=5).until(lambda d:
-    d.find_element_by_name('item-text'))
-    assert item_text.text == 'Test Todo - Done'
+    time.sleep(1)
+    item_text: WebElement = driver.find_element_by_name('item-text')
+    assert item_text.text == 'Test Todo - Done'  
