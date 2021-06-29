@@ -6,7 +6,7 @@ before_install:
   - docker login --username=_ --password=$(heroku auth:token) registry.heroku.com
 
 install:
-  # Script for Building Docker Image for Tests
+  # Script for Building Docker Image for Tests and Pushing to Docker & Tagging for Heroku
   - docker build --cache-from todo_app:test --target test --tag todo_app:test --tag todo_app:test_e2e .
   #- docker build --target test --tag todo_app:test_e2e .
   - docker build --cache-from $DOCKER_LOGIN/todo_app:latest --target production --tag $DOCKER_LOGIN/todo_app:latest .
@@ -15,7 +15,7 @@ install:
   - docker push registry.heroku.com/$HEROKU_APP/web
   
 script:
-  # Script for running Tests on CI
+  # Script for running Tests on Travis CI
   - docker run todo_app:test tests
   #- docker run --env-file .env todo_app:test tests_e2e
   - docker run --env API_KEY --env API_TOKEN --env NAME --env BOARD_ID --env TODO_LIST_ID --env DOING_LIST_ID --env DONE_LIST_ID --env FLASK_APP --env FLASK_ENV  todo_app:test tests_e2e
