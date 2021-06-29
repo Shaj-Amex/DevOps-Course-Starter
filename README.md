@@ -17,6 +17,10 @@
 
   There are 3 tests that have been added - Unit Tests , Integration Tests and EndToEnd Tests. They can be run by the following command : poetry run pytest For the end to end tests , install the latest version of Chrome browser and Chrome Driver.
 
+### Deployment on HEROKU
+   https://shajeethtodoapp.herokuapp.com
+   
+
 
 ## System Requirements
 
