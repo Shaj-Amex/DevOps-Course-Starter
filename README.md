@@ -9,7 +9,7 @@
   
   To Build and Run End to End Tests on Dockerfile
 
-    docker build --target test --tag todo_app:test_e2e .
+    docker build --target test -tag todo_app:test_e2e .
     docker run --env-file .env todo_app:test_e2e tests_e2e
 
 
