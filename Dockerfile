@@ -29,13 +29,13 @@ RUN poetry add gunicorn
 #ENTRYPOINT ["poetry", "run", "gunicorn", "--bind", "0.0.0.0:5000", "todo_app.app:app"]
 COPY ./entrypoint.sh ./entrypoint.sh
 RUN chmod +x ./entrypoint.sh
-#ENTRYPOINT ["poetry", "run", "gunicorn", "--bind", "./entrypoint.sh", "shajeethtodoapp/todo_app:latest"]
 ENTRYPOINT ["./entrypoint.sh"]
 
 
 FROM base as test 
 ENV FLASK_ENV=development
 RUN poetry install
+
 # Install Chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
@@ -44,13 +44,6 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
     ${CHROME_VERSION:-google-chrome-stable} \
   && rm /etc/apt/sources.list.d/google-chrome.list \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-
-
-#RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o chrome.deb &&\
-#    apt-get install ./chrome.deb -y &&\
-#    rm ./chrome.deb
-# Install Chromium WebDriver
-# Source https://github.com/SeleniumHQ/docker-selenium/blob/trunk/NodeChrome/Dockerfile
 
 RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-9]+){3}.*/\1/") \
   && CHROME_DRIVER_VERSION=$(wget --no-verbose -O - "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR_VERSION}") \
@@ -63,15 +56,5 @@ RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-
   && chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
   && ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
 
-  #COPY /usr/bin/chromedriver
-
-
-# Below Code Not Working
-#RUN LATEST=`curl -sSL https://chromedriver.storage.googleapis.com/LATEST_RELEASE` &&\
-#    echo "Installing chromium webdriver version ${LATEST}" &&\
-#    curl -sSL https://chromedriver.storage.googleapis.com/${LATEST}/chromedriver_linux64.zip -o chromedriver_linux64.zip &&\
-#   apt-get install unzip -y &&\
-#    unzip ./chromedriver_linux64.zip
 RUN export PATH=$PATH:/usr/bin/chromedriver
-ENV PYTHONPATH=.
 ENTRYPOINT ["poetry", "run", "pytest"]

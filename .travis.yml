@@ -7,7 +7,7 @@ before_install:
 
 install:
   # Script for Building Docker Image for Tests
-  - docker build --cache-from todo_app:test --target test --tag todo_app:test .
+  - docker build --cache-from todo_app:test --target test --tag todo_app:test --tag todo_app:test_e2e .
   #- docker build --target test --tag todo_app:test_e2e .
   - docker build --cache-from $DOCKER_LOGIN/todo_app:latest --target production --tag $DOCKER_LOGIN/todo_app:latest .
   - docker push $DOCKER_LOGIN/todo_app:latest
@@ -26,7 +26,7 @@ deploy:
   script:
     - heroku container:release -a $HEROKU_APP web
   on: 
-    branch: master
+    branch: Module_8
 
 
 
